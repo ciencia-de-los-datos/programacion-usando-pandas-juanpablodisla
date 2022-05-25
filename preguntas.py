@@ -22,7 +22,9 @@ def pregunta_01():
     40
 
     """
-    return
+    rows = len(tbl0.axes[0])
+    response = rows
+    return response
 
 
 def pregunta_02():
@@ -33,7 +35,9 @@ def pregunta_02():
     4
 
     """
-    return
+    columns = len(tbl0.axes[1])
+    response = columns
+    return response 
 
 
 def pregunta_03():
@@ -50,7 +54,10 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    account = tbl0["_c1"].value_counts()
+    response = account.sort_index()
+
+    return response
 
 
 def pregunta_04():
@@ -65,7 +72,9 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    mean_df = tbl0.groupby(by="_c1").mean()
+    response = mean_df["_c2"]
+    return response
 
 
 def pregunta_05():
@@ -82,7 +91,9 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    max_df = tbl0.groupby(by="_c1").max()
+    response = max_df["_c2"]
+    return response 
 
 
 def pregunta_06():
@@ -94,7 +105,13 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    account = tbl1["_c4"].value_counts()
+    indexes_list = list(account.index)
+    response = []
+    for element in indexes_list:
+        response.append(element.upper())
+    response = sorted(response)
+    return response
 
 
 def pregunta_07():
@@ -110,7 +127,9 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    max_df = tbl0.groupby(by="_c1").sum()
+    response = max_df["_c2"]
+    return response 
 
 
 def pregunta_08():
@@ -128,7 +147,8 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0["suma"] = tbl0[["_c0","_c2"]].sum(axis=1)
+    return tbl0
 
 
 def pregunta_09():
@@ -146,7 +166,8 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0["year"] = tbl0["_c3"].str.slice(stop=4)
+    return tbl0
 
 
 def pregunta_10():
@@ -163,7 +184,27 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    column_c1 = []
+    column_c2 = []
+    for index, row in tbl0.iterrows():
+        column_c1.append(row["_c1"])
+        column_c2.append(row["_c2"])
+
+    column_c1_ordered = list(set(column_c1))
+    column_c1_ordered = sorted(column_c1_ordered)    
+    join_c2_list = []
+    for element in column_c1_ordered:
+        value_list = []
+        for sub_element_1, sub_element_2 in zip(column_c1, column_c2):
+            if sub_element_1==element:
+                value_list.append(str(sub_element_2))
+                value_list.sort()      
+        join_element = ":".join(value_list)
+        join_c2_list.append(str(join_element))
+    df_1 = pd.DataFrame()
+    df_1["_c1"] = column_c1_ordered
+    df_1["_c2"] = join_c2_list
+    return df_1.set_index("_c1")
 
 
 def pregunta_11():
@@ -182,7 +223,26 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    column_c0 = []
+    column_c4 = []
+    for index, row in tbl1.iterrows():
+        column_c0.append(row["_c0"])
+        column_c4.append(row["_c4"])
+    column_c0_ordered = list(set(column_c0))
+    column_c0_ordered = sorted(column_c0_ordered)    
+    join_c4_list = [] 
+    for element in column_c0_ordered:
+        value_list = []
+        for sub_element_1, sub_element_2 in zip(column_c0, column_c4):
+            if sub_element_1==element:
+                value_list.append(str(sub_element_2))
+                value_list.sort()      
+        join_element = ",".join(value_list)
+        join_c4_list.append(join_element)
+    df_1 = pd.DataFrame()
+    df_1["_c0"] = column_c0_ordered
+    df_1["_c4"] = join_c4_list        
+    return df_1
 
 
 def pregunta_12():
@@ -200,7 +260,29 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    column_c0 = []
+    column_c5a = []
+    column_c5b = []
+    for index, row in tbl2.iterrows():
+        column_c0.append(row["_c0"])
+        column_c5a.append(row["_c5a"])
+        column_c5b.append(row["_c5b"])
+    column_c0_ordered = list(set(column_c0))
+    column_c0_ordered = sorted(column_c0_ordered)    
+    join_c5a_c5b_list = [] 
+    for element in column_c0_ordered:
+        value_list = []
+        for sub_element_1, sub_element_2, sub_element_3 in zip(column_c0, column_c5a, column_c5b):
+            if sub_element_1==element:
+                join_value = str(sub_element_2) + ":" + str(sub_element_3)
+                value_list.append(str(join_value))
+                value_list.sort()      
+        join_element = ",".join(value_list)
+        join_c5a_c5b_list.append(join_element)
+    df_1 = pd.DataFrame()
+    df_1["_c0"] = column_c0_ordered
+    df_1["_c5"] = join_c5a_c5b_list        
+    return df_1
 
 
 def pregunta_13():
@@ -217,4 +299,18 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    series_tbl0 = tbl0.groupby("_c0")._c1.sum()
+    series_tbl2 = tbl2.groupby("_c0")._c5b.sum()
+
+    df_1 = pd.DataFrame()
+    df_1 = series_tbl0
+
+
+    df_2 = pd.DataFrame()
+    df_2 = series_tbl2
+
+    df_concat = pd.merge(df_1,df_2,on="_c0")
+
+    series_concat = df_concat.groupby("_c1")._c5b.sum()
+  
+    return series_concat
