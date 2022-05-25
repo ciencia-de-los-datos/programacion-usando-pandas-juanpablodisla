@@ -22,7 +22,9 @@ def pregunta_01():
     40
 
     """
-    return
+    rows = len(tbl0.axes[0])
+    response = rows
+    return response
 
 
 def pregunta_02():
